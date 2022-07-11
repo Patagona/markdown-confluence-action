@@ -11,12 +11,6 @@ const space = core.getInput('confluence_space', {required: true})
 const repo_url = core.getInput('repository_url', {required: true})
 const global_title = core.getInput('confluence_title', {required: true})
 
-const mark_tar = await tool_cache.downloadTool('https://github.com/kovetskiy/mark/releases/download/8.1/mark_8.1_Linux_x86_64.tar.gz');
-const mark_dir = tool_cache.extractTar(mark_tar, 'mark_dir');
-const cached_dir = await tool_cache.cacheDir(mark_dir, 'mark', '8.1');
-
-
-core.addPath(cached_dir);
 
 function upload_dir(dir, parent) {
   const content = fs.readdirSync(dir, {withFileTypes: true});
@@ -49,6 +43,18 @@ function upload_extend_file(file, title, parent) {
 }
 
 
-upload_extend_file('README.md', global_title);
+async function main() {
+  const mark_tar = await tool_cache.downloadTool('https://github.com/kovetskiy/mark/releases/download/8.1/mark_8.1_Linux_x86_64.tar.gz');
+  const mark_dir = tool_cache.extractTar(mark_tar, 'mark_dir');
+  const cached_dir = await tool_cache.cacheDir(mark_dir, 'mark', '8.1');
 
-upload_dir('doc');
+
+  core.addPath(cached_dir);
+  
+  upload_extend_file('README.md', global_title);
+
+  upload_dir('doc');
+}
+
+main().then(_ => {}).catch(err => {console.log(err)})
+
