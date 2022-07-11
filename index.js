@@ -14,7 +14,7 @@ const global_title = core.getInput('confluence_title', {required: true})
 
 async function upload_dir(dir, parent) {
   const content = fs.readdirSync(dir, {withFileTypes: true});
-  content.forEach(dir_entry => {
+  content.forEach(async dir_entry => {
     if (dir_entry.isFile()){
       await upload_extend_file(`${dir}/${dir_entry.name}`, title_from_file(dir_entry.name), parent);
       const child_path = `${dir}/${dir_entry.name}.d`;
@@ -54,7 +54,7 @@ async function main() {
   
   await upload_extend_file('README.md', global_title);
 
-await upload_dir('doc');
+  await upload_dir('doc');
 }
 
 main().then(_ => {}).catch(err => {console.log(err)})
