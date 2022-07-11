@@ -45,7 +45,7 @@ function upload_extend_file(file, title, parent) {
 
 async function main() {
   const mark_tar = await tool_cache.downloadTool('https://github.com/kovetskiy/mark/releases/download/8.1/mark_8.1_Linux_x86_64.tar.gz');
-  const mark_dir = tool_cache.extractTar(mark_tar, 'mark_dir');
+  const mark_dir = await tool_cache.extractTar(mark_tar, 'mark_dir');
   const cached_dir = await tool_cache.cacheDir(mark_dir, 'mark', '8.1');
 
 
