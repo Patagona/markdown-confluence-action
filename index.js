@@ -4,9 +4,9 @@ const tool_cache = require('@actions/tool-cache');
 const exec = require('@actions/exec');
 const fs = require('fs');
 
-const user = core.getInput('confulence_user', {required: true})
+const user = core.getInput('confluence_user', {required: true})
 const password = core.getInput('confluence_password', {required: true})
-const url = core.getInput('conflucene_url', {required: true})
+const url = core.getInput('confluence_url', {required: true})
 const space = core.getInput('confluence_space', {required: true})
 const repo_url = core.getInput('repository_url', {required: true})
 const global_title = core.getInput('confluence_title', {required: true})
