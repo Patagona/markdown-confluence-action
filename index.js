@@ -43,7 +43,7 @@ function upload_extend_file(file, title, parent) {
   
   file_content = `${file_content}\n\n **NOTE**: this document is generated, do not edit manually. Instead open a pull request in the [repository](${repo_url}).`
   fs.writeFileSync(tmp_file_name, file_content);
-  exec.exec('mark',  ['--space', space, '-u', user, '-p', password, '-b', url, '-f', path]);
+  exec.exec('mark',  ['--space', space, '-u', user, '-p', password, '-b', url, '-f', tmp_file_name]);
 }
 
 
