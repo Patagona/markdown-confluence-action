@@ -36,6 +36,8 @@ async function upload_extend_file(file, title, parent) {
   let parent_line = undefined;
   if (parent) {
      parent_line = `<-- Parent: ${parent} -->\n`
+  } else {
+    parent_line = ''
   }
   
   let file_content = `${title_line}${parent_line}${original_content}\n\n **NOTE**: this document is generated, do not edit manually. Instead open a pull request in the [repository](${repo_url}).`
