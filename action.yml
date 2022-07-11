@@ -1,0 +1,24 @@
+name: 'markdown to confluence'
+description: 'Upload documentation to confluence'
+inputs:
+  confulence_user:
+    description: username for confluence authentication
+    required: true
+  confluence_password:
+    description: password for confluence authentication
+    required: true
+  conflucene_url:
+    description: url to confluence
+    required: true
+  confluence_space:
+    description: name of the confluence space
+    required: true
+  repository_url:
+    description: url of the current repository
+    required: true
+  confluence_title:
+    description: title of the root node in the confluence page tree
+    required: true
+runs:
+  using: 'node16'
+  main: 'index.js'
