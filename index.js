@@ -13,8 +13,10 @@ const global_title = core.getInput('confluence_title', {required: true})
 
 const mark_tar =  tool_cache.downloadTool('https://github.com/kovetskiy/mark/releases/download/8.1/mark_8.1_Linux_x86_64.tar.gz');
 const mark_dir = tool_cache.extractTar(mark_tar, 'mark_dir');
+const cached_dir = tool_cache.cacheDir(mark_dir, 'mark', '8.1');
 
-core.addPath(mark_dir);
+
+core.addPath(cached_dir);
 
 function upload_dir(dir, parent) {
   const content = fs.readdirSync(dir, {withFileTypes: true});
