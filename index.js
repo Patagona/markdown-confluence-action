@@ -26,16 +26,16 @@ async function upload_dir(dir, parent) {
 }
 
 function title_from_file(file) {
-  return file.replace("-", " ")
+  return file.replace('.md', '').replace("-", " ")
 }
 
 async function upload_extend_file(file, title, parent) {
   let tmp_file_name = file + ".tmp";
   let original_content = fs.readFileSync(file);
-  let title_line = `<-- Title: ${title} -->\n`;
+  let title_line = `<!-- Title: ${title} -->\n`;
   let parent_line = undefined;
   if (parent) {
-     parent_line = `<-- Parent: ${parent} -->\n`
+     parent_line = `<!-- Parent: ${parent} -->\n`
   } else {
     parent_line = ''
   }
