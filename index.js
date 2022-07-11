@@ -22,7 +22,7 @@ function upload_dir(dir, parent) {
     if (dir_entry.isFile()){
       upload_extend_file(`${dir}/${dir_entry.name}`, title_from_file(dir_entry.name), parent);
       const child_path = `${dir}/${dir_entry.name}.d`;
-      if (fs.statSync(child_path)) {
+      if (fs.statSync(child_path, {throwIfNoEntry: false})) {
         upload_dir(child_path, title_from_file(dir_entry.name));
       }
     }
