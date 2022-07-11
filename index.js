@@ -12,14 +12,14 @@ const repo_url = core.getInput('repository_url', {required: true})
 const global_title = core.getInput('confluence_title', {required: true})
 
 
-function upload_dir(dir, parent) {
+async function upload_dir(dir, parent) {
   const content = fs.readdirSync(dir, {withFileTypes: true});
   content.forEach(dir_entry => {
     if (dir_entry.isFile()){
-      upload_extend_file(`${dir}/${dir_entry.name}`, title_from_file(dir_entry.name), parent);
+      await upload_extend_file(`${dir}/${dir_entry.name}`, title_from_file(dir_entry.name), parent);
       const child_path = `${dir}/${dir_entry.name}.d`;
       if (fs.statSync(child_path, {throwIfNoEntry: false})) {
-        upload_dir(child_path, title_from_file(dir_entry.name));
+        await upload_dir(child_path, title_from_file(dir_entry.name));
       }
     }
   });
@@ -29,7 +29,7 @@ function title_from_file(file) {
   return file.replace("-", " ")
 }
 
-function upload_extend_file(file, title, parent) {
+async function upload_extend_file(file, title, parent) {
   let tmp_file_name = file + ".tmp";
   let original_content = fs.readFileSync(file);
   let file_content = `<-- Title: ${title} -->\n`;
@@ -38,8 +38,9 @@ function upload_extend_file(file, title, parent) {
   }
   
   file_content = `${file_content}\n\n **NOTE**: this document is generated, do not edit manually. Instead open a pull request in the [repository](${repo_url}).`
+  console.log(file_content)
   fs.writeFileSync(tmp_file_name, file_content);
-  exec.exec('mark',  ['--space', space, '-u', user, '-p', password, '-b', url, '-f', tmp_file_name]);
+  await exec.exec('mark',  ['--space', space, '-u', user, '-p', password, '-b', url, '-f', tmp_file_name]);
 }
 
 
@@ -51,9 +52,9 @@ async function main() {
 
   core.addPath(cached_dir);
   
-  upload_extend_file('README.md', global_title);
+  await upload_extend_file('README.md', global_title);
 
-  upload_dir('doc');
+await upload_dir('doc');
 }
 
 main().then(_ => {}).catch(err => {console.log(err)})
