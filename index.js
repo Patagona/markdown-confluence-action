@@ -32,12 +32,13 @@ function title_from_file(file) {
 async function upload_extend_file(file, title, parent) {
   let tmp_file_name = file + ".tmp";
   let original_content = fs.readFileSync(file);
-  let file_content = `<-- Title: ${title} -->\n`;
+  let title_line = `<-- Title: ${title} -->\n`;
+  let parent_line = undefined;
   if (parent) {
-    file_content = `<-- Parent: ${parent} -->\n ${file_content}\n${original_content}`
+     parent_line = `<-- Parent: ${parent} -->\n`
   }
   
-  file_content = `${file_content}\n\n **NOTE**: this document is generated, do not edit manually. Instead open a pull request in the [repository](${repo_url}).`
+  let file_content = `${title_line}${parent_line}${original_content}\n\n **NOTE**: this document is generated, do not edit manually. Instead open a pull request in the [repository](${repo_url}).`
   console.log(file_content)
   fs.writeFileSync(tmp_file_name, file_content);
   await exec.exec('mark',  ['--space', space, '-u', user, '-p', password, '-b', url, '-f', tmp_file_name]);
